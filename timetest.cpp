@@ -3,6 +3,17 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "CPUTimer.h"
+#include "dsexceptions.h"
+#include "LinkedList.h"
+#include "StackAr.h"
+#include "CursorList2.h"
+#include "QueueAr.h"
+#include "StackLi.h"
+#include "vector.h"
+#include "SkipList.h"
+
+vector<CursorNode <int> > cursorSpace;
 
 using namespace std;
 
