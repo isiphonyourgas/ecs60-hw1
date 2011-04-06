@@ -14,4 +14,5 @@ public:
 //  int content;
 private:
   unsigned int content;
+  LongInt *next;
 };
