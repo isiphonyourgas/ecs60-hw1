@@ -7,6 +7,6 @@ int main()
 {
   LongInt int1;
   cin >> int1;
-//  cout << int1 << endl;
+  cout << int1 << endl;
   return 0;
 }

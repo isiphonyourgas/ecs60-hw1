@@ -14,11 +14,10 @@ LongInt :: LongInt ()
 
 istream &operator >> (istream &input, LongInt &longint)
 {
-  string temp = "";
   char c;
-  int i;
-  input.readsome(temp, 8);
-  cout << temp;
+  c = input.get();
+  longint.content = int(c) - 48;
+  //cout << longint.content << endl;;
   if (input.peek() != '\n')
   {
     longint.next = new LongInt;
@@ -29,11 +28,11 @@ istream &operator >> (istream &input, LongInt &longint)
 
 ostream &operator << (ostream &output, const LongInt &longint)
 {
+  output << longint.content;
   if (longint.next != NULL)
   {
-   // output << longint.content;
-   // output << *(longint.next);
-  } else { cout << "NULL";}
+    output << *(longint.next);
+  }
   return output;
 }
 LongInt :: ~LongInt() {}
