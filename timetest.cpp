@@ -53,8 +53,10 @@ void disp_menu()
 void menu(string filename)
 {
   int choice;
+  CPUTimer ct;
   do
   {
+    ct.reset();
     disp_menu();
     cout << "Your choice >> ";
     cin >> choice;
@@ -68,13 +70,37 @@ void menu(string filename)
       case 5: RunQueueAr(filename); break;
       case 6: RunSkipList(filename); break;
     }//switch statement
-    cout << "CPU time: " << endl;  
+    cout << "CPU time: "<< ct.cur_CPUTime()  << endl;  
   } while (choice > 0);
 }
 
 void RunList(string filename)
 {
+  //Variable Declarations
+  ifstream file;
+  char operation;
+  int amount;
+  file.open( filename ios::in )//Opens file
 
+  //if the file does not exist.
+  if( !p )
+  {
+    cout << "There is no file " << filename << "." << endl;
+    break;
+  }
+//Reads until the file is end of file
+  while(!file.eof())
+  {
+    operation = file.get();//Reads the first char which is i or d to determine
+                           //operation needed
+    if( operation == 'i' )//If insert operation
+    {
+  
+    } else {//If delete operation
+  
+    }
+  }
+  file.close();//Closes file
 }
 
 void RunCursorList(string filename)
