@@ -6,16 +6,19 @@ using namespace std;
 class LongInt
 {
 public:
+
+//Constructor
   LongInt();
+
+//Overloaded Operators
   friend istream &operator >> (istream &, LongInt & );
   friend ostream &operator << (ostream &, const LongInt & );
   friend LongInt &operator + (LongInt &, LongInt &);
-  void setback( LongInt );
+
+//Destructor
   ~LongInt();
 
-  int content;
-  LongInt *next, *back;
 private:
- // unsigned int content;
-//  LongInt *next, *back;
+  unsigned int content;
+  LongInt *next, *back;
 };
