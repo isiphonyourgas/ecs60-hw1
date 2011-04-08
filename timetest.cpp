@@ -96,8 +96,8 @@ void RunList(string filename)
                            //determine operation needed
     if( operation == 'i' )//If insert operation
     {
-      content.insert(amount, p);
-      p.advance();
+      content.insert(amount, p);//Inserts into List
+      p.advance();//Moves iterator up once for next insert
     } else {//If delete operation
       content.remove(amount);
     }
@@ -108,6 +108,34 @@ void RunList(string filename)
 void RunCursorList(string filename)
 {
 
+/*  //Variable Declarations
+  ifstream file;
+  char operation;
+  int amount;
+  CursorList  <int>content;
+  CursorListItr <int>p = content.first();
+
+  file.open(filename.c_str());
+  //if the file does not exist.
+  if( !file )
+  {
+    cout << "There is no file " << filename << "." << endl;
+  }
+//Reads until the file is end of file
+  while(!file.eof())
+  {
+    operation = file.get();//Reads the first char which is i or d to 
+                           //determine operation needed
+    if( operation == 'i' )//If insert operation
+    {
+      content.insert(amount, p);//Inserts into List
+      p.advance();//Moves iterator up once for next insert
+    } else {//If delete operation
+      content.remove(amount);
+    }
+  }
+  file.close();//Closes file
+*/
 }
 
 void RunStackAr(string filename)
