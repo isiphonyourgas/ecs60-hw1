@@ -6,3 +6,6 @@ LongIntMain.o : LongIntMain.cpp LongInt.h
 
 LongInt.o : LongInt.cpp LongInt.h
 	g++ -c LongInt.cpp
+
+time:	timetest.cpp LinkedList.cpp StackAr.cpp CursorList2.cpp QueueAr.cpp StackLi.cpp vector.cpp SkipList.cpp
+	g++ -Wall timetest.cpp LinkedList.cpp StackAr.cpp CursorList2.cpp QueueAr.cpp StackLi.cpp vector.cpp SkipList.cpp
