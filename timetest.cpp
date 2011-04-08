@@ -79,25 +79,25 @@ void RunList(string filename)
   //Variable Declarations
   ifstream file;
   char operation;
-  int amount;
-  file.open( filename ios::in )//Opens file
+  int amount, p = 1;
+  List  <int>content;
 
+  file.open(filename.c_str());
   //if the file does not exist.
-  if( !p )
+  if( !file )
   {
     cout << "There is no file " << filename << "." << endl;
-    break;
   }
 //Reads until the file is end of file
   while(!file.eof())
   {
-    operation = file.get();//Reads the first char which is i or d to determine
-                           //operation needed
+    operation = file.get();//Reads the first char which is i or d to 
+                           //determine operation needed
     if( operation == 'i' )//If insert operation
     {
-  
+      content.insert(amount, p);
     } else {//If delete operation
-  
+      content.remove(amount);
     }
   }
   file.close();//Closes file
