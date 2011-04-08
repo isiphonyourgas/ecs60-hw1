@@ -79,8 +79,9 @@ void RunList(string filename)
   //Variable Declarations
   ifstream file;
   char operation;
-  int amount, p = 1;
+  int amount;
   List  <int>content;
+  ListItr <int>p = content.first();
 
   file.open(filename.c_str());
   //if the file does not exist.
@@ -96,6 +97,7 @@ void RunList(string filename)
     if( operation == 'i' )//If insert operation
     {
       content.insert(amount, p);
+      p.advance();
     } else {//If delete operation
       content.remove(amount);
     }
