@@ -6,13 +6,53 @@
 #include <string>
 #include <cstdlib>
 
+LongIntNode :: LongIntNode ()
+{
+  forward = NULL;
+  backward = NULL;
+}
+
+void LongIntNode :: set(int s)
+{  content = s;  }
+
+void LongIntNode :: setnext(LongIntNode *ptr)
+{  forward = ptr; }
+
+void LongIntNode :: setback(LongIntNode *ptr)
+{  backward = ptr; }
+
+int LongIntNode :: get()
+{  return content;  }
+
+LongIntNode* LongIntNode :: next()
+{   return forward; }
+
+LongIntNode* LongIntNode :: back()
+{  return backward; }
+
+LongIntNode :: ~LongIntNode() {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Default Constructor
 //Sets everything to 0 and NULL in order for rest of program to work
 LongInt :: LongInt () 
 {
-  content = 0;
-  next = NULL;
-  back = NULL;
+  head = NULL;
+  tail = NULL;
 }
 
 //Overloaded insertion operator
@@ -26,30 +66,16 @@ istream &operator >> (istream &input, LongInt &longint)
   LongInt *ptr;
   ptr = &longint;
 
+  while(c != '\n')
+{
   //Recieves from the stream and converts into integer format
   c = input.get();
   s = int(c) - 48;
 
   //Filters out unwanted chars
   if ((s > -1) && (s < 10))//integer check
-  {
-    longint.content = s;//loads the content
-    longint.next = new LongInt;//creates next LongInt Object
-    ((longint.next)->back) = &longint;//Sets back pointer
-    input >> *(longint.next);//Continues to next digit input
-  } else { //If didn't pass check, remove excess LongInt object
-    ptr = longint.back;//moves pointer back
-    free(ptr->next);//frees excess object
-    ptr->next = NULL;//Nulls next pointer for running the down the list
-  } 
-
-//Sets the back pointer in the first node to not NULL for overloaded +
-  if(longint.back == NULL)
-  { 
-    longint.back = new LongInt;
-  }
-
-
+    longint.insertBack(s);
+}
 //Return Statement
   return input;
 }//Overloaded >> Insertion Operator
@@ -60,17 +86,15 @@ istream &operator >> (istream &input, LongInt &longint)
 //until the end of the list
 ostream &operator << (ostream &output, const LongInt &longint)
 {
-
+  LongIntNode *ptr;
 //Outputs the content of the list
-  output << longint.content;
 
-//Checks to see if it is the end of the list and if it doesn, makes a
-//recurssive call
-  if (longint.next != NULL)
+  ptr = longint.head;
+  while(ptr != NULL)
   {
-    output << *(longint.next);
+    output << ptr->get();
+    ptr = ptr->next();
   }
-
 //Return Statement
   return output;
 }//Overloaded << Output Operator
@@ -80,109 +104,135 @@ ostream &operator << (ostream &output, const LongInt &longint)
 LongInt &operator + (LongInt &int1, LongInt &int2)
 {
 //Variable Declarations
-  LongInt *ptr1, *ptr2, *ptr3;
-  LongInt *begin = NULL;
+  LongIntNode *ptr1, *ptr2, *ptr3;
+  LongInt *begin = new LongInt;
   int result = 0;//Sets the result at 0
   bool flag = 0;//Used to carry digits over
 
-//Sets pointers
-  ptr1 = &int1;
-  ptr2 = &int2;
-
-//traverses to the end of the list
-  while(ptr1->next != NULL)
-  { ptr1 = ptr1->next; }
-  while(ptr2->next != NULL)
-  { ptr2 = ptr2->next; }
+//Sets pointers to end of list
+  ptr1 = int1.tail;
+  ptr2 = int2.tail;
 
 //adds the digits together when still traversing through both lists
-  while((ptr1->back != NULL) && (ptr2->back != NULL))
+  while((ptr1 != NULL) && (ptr2 != NULL))
   {
-    ptr3 = new LongInt;//Creates new node
-    ptr3->next = begin;//Sets next pointer on current node being added
+    
 
     if(flag == 0)//If there was 1 digits in last node
-     result = ptr1->content + ptr2->content; 
+     result = ptr1->get() + ptr2->get(); 
     else//If there was 2 digits in last node
-     result = ptr1->content + ptr2->content + 1; 
+     result = ptr1->get() + ptr2->get() + 1; 
 
-//Checks for 2 digits in current node
+    //Checks for 2 digits in current node
     if( result > 9)//There is 2 digits
     { flag = 1;
       result = result - 10;
     }
-//There is 1 digit
+    //There is 1 digit
     else 
       flag = 0;
 
-//Scoots pointer back 1 node
-    ptr1 = ptr1->back;
-    ptr2 = ptr2->back;
+    begin->insertFront(result);//loads the result
+    ptr1 = ptr1->back();//moves pointer back
+    ptr2 = ptr2->back();
 
-//Loads the content of the node
-    ptr3->content = result;
-    begin = ptr3;//Sets beginning of the list
-    ptr3 = ptr3->back;//Prepares to add node behind current node for a
-		      //more significant digit
   }//Traverse both lists
 
-//If 2nd list reaches the end, continues adding the 1st list
-  while(ptr1->back != NULL)
+  //If 2nd list reaches the end, continues adding the 1st list
+  while(ptr1 != NULL)
   {
-    ptr3 = new LongInt;
-    ptr3->next = begin;
-    ptr3->content = ptr1->content;
+    
+    result = ptr1->get();
+
     if(flag == 1)//checks for 2 digits in last node
     {
-      (ptr3->content)++;//increment current node
+      result++;
       flag = 0;//reset flag
-      if(ptr3->content >= 10)//Checks for 2 digits in current node
+      if(result >= 10)//Checks for 2 digits in current node
       {
         flag = 1;//sets flag
-        ptr3->content = ptr3->content - 10;//deletes significant digit
+        result = result - 10;//deletes significant digit
   					   //for next node
       }
     }
-    ptr1 = ptr1->back;
-    begin = ptr3;
-    ptr3 = ptr3->back;
-  }//Traverse list 2
+    begin->insertFront(result);
+    ptr1 = ptr1->back();    
+  }//Traverse list 1
 
 //If 1st list reaches end, continues adding 2nd list
-  while(ptr2->back != NULL)
+  while(ptr2 != NULL)
   {
-    ptr3 = new LongInt;
-    ptr3->next = begin;
-    ptr3->content = ptr2->content;
+    result = ptr2->get();
     if(flag == 1)
     {
-      (ptr3->content)++;
+      result++;
       flag = 0;
-      if(ptr3->content >= 10)
+      if(result >= 10)
       {
         flag = 1;
-        ptr3->content = ptr3->content - 10;
+        result = result - 10;
       }
     }
-    ptr2 = ptr2->back;
-    begin = ptr3;
-    ptr3 = ptr3->back;
+    begin->insertFront(result);
+    ptr2 = ptr2->back();
   }//Traverse List 1
 
 //If first list had 2 digits in content, creates a new node to hold
 //most significant digit
   if(flag == 1)
   {
-    ptr3 = new LongInt;
-    ptr3->next = begin;
-    ptr3->content = 1;
-    begin = ptr3;
+    begin->insertFront(1);
   }
   
 //Return Statement
   return *begin;
 }//Overloaded + Addition Operator
 
+
+//Will Insert a Node at the front
+void LongInt :: insertFront(int s)
+{
+  LongIntNode *ptr;
+
+  if(head == NULL)
+  {
+    head = new LongIntNode;
+    tail = head;
+    ptr = head;
+  }
+  else 
+  {
+    ptr = head->back();
+    ptr = new LongIntNode;
+    ptr->setnext(head);
+    head = ptr;
+  }
+  
+  ptr->set(s);
+    
+}
+
+//Will Insert a Node at the Back
+void LongInt :: insertBack(int s)
+{
+  LongIntNode *ptr;
+  
+  if(tail == NULL)
+  {
+    tail = new LongIntNode;
+    head = tail;
+    ptr = tail;
+  }
+  else
+  {
+    ptr = tail->next();
+    ptr = new LongIntNode;
+    ptr->setback(tail);
+    tail = ptr;
+  }
+  
+  ptr->set(s);
+}
 
 LongInt :: ~LongInt() {}//Destructor
 
