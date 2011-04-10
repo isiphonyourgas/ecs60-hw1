@@ -29,12 +29,10 @@ void RunSkipList(string filename);
 int main()
 {
 
-  string filename = "";;
+  string filename = "";
 
   cout << "Filename >> ";
   getline(cin, filename);
-  
-  menu(filename);
 
 }
 
@@ -53,10 +51,8 @@ void disp_menu()
 void menu(string filename)
 {
   int choice;
-  CPUTimer ct;
   do
   {
-    ct.reset();
     disp_menu();
     cout << "Your choice >> ";
     cin >> choice;
@@ -70,90 +66,130 @@ void menu(string filename)
       case 5: RunQueueAr(filename); break;
       case 6: RunSkipList(filename); break;
     }//switch statement
-    cout << "CPU time: "<< ct.cur_CPUTime()  << endl;  
+    cout << "CPU time: " << endl; 
   } while (choice > 0);
 }
 
 void RunList(string filename)
 {
-  //Variable Declarations
-  ifstream file;
-  char operation;
-  int amount;
-  List  <int>content;
-  ListItr <int>p = content.first();
+  CursorList <int> list(cursorSpace);
+  CursorListItr <int> listItr = list.zeroth();
+  ifstream inf;
+  char command, line[512];
+  int num;
 
-  file.open(filename.c_str());
-  //if the file does not exist.
-  if( !file )
+  inf.open(filename.c_str());
+  inf.getline(line,512);
+
+  while(inf >> command>> num)
   {
-    cout << "There is no file " << filename << "." << endl;
-  }
-//Reads until the file is end of file
-  while(!file.eof())
-  {
-    operation = file.get();//Reads the first char which is i or d to 
-                           //determine operation needed
-    if( operation == 'i' )//If insert operation
-    {
-      content.insert(amount, p);//Inserts into List
-      p.advance();//Moves iterator up once for next insert
-    } else {//If delete operation
-      content.remove(amount);
-    }
-  }
-  file.close();//Closes file
+    if (command == 'i')
+      list.insert(num,listItr);
+    else if (command == 'd')
+      list.remove(num);
+  } //while
+  inf.close();
+
 }
 
 void RunCursorList(string filename)
 {
+  CursorList <int> list(cursorSpace);
+  CursorListItr <int> listItr = list.zeroth();
+  ifstream inf;
+  char command, line[512];
+  int num;
 
-/*  //Variable Declarations
-  ifstream file;
-  char operation;
-  int amount;
-  CursorList  <int>content;
-  CursorListItr <int>p = content.first();
+  inf.open(filename.c_str());
+  inf.getline(line,512);
 
-  file.open(filename.c_str());
-  //if the file does not exist.
-  if( !file )
+  while(inf >> command>>num)
   {
-    cout << "There is no file " << filename << "." << endl;
-  }
-//Reads until the file is end of file
-  while(!file.eof())
-  {
-    operation = file.get();//Reads the first char which is i or d to 
-                           //determine operation needed
-    if( operation == 'i' )//If insert operation
-    {
-      content.insert(amount, p);//Inserts into List
-      p.advance();//Moves iterator up once for next insert
-    } else {//If delete operation
-      content.remove(amount);
-    }
-  }
-  file.close();//Closes file
-*/
+    if (command == 'i')
+        list.insert(num,listItr);
+    else if (command=='d')
+    list.remove(num);
+  } //while
+  inf.close();
 }
 
 void RunStackAr(string filename)
 {
+ StackAr <int> stack(1000000);
+  ifstream inf;
+  char command, line[512];
+  int num;
 
-}
+  inf.open(filename.c_str());
+  inf.getline(line,512);
+
+  while(inf >> command>> num)
+  {
+    if (command == 'i')
+        stack.push(num);
+    else if (command=='d')
+    stack.pop();
+  } //while
+  inf.close();
+} // RunStackAr()
 
 void RunStackLi(string filename)
 {
+ StackLi <int> stack(1000000);
+  ifstream inf;
+  int num;
+  char command, line[512];
+ 
+  inf.open(filename.c_str());
+  inf.getline(line,512);
 
-}
+  while(inf >> command>> num)
+  {
+    if (command == 'i')
+        stack.push(num);
+    else if (command=='d')
+    stack.pop();
+  } //while
+  inf.close();
+} // RunStackLi()
 
 void RunQueueAr(string filename)
 {
+  QueueAr <int> queue(1000000);
+  ifstream inf;
+  int num;
+  char command, line[512];
 
+  inf.open(filename.c_str());
+  inf.getline(line,512);
+
+  while(inf >> command>> num)
+  {
+    if (command == 'i')
+        queue.enqueue(num);
+    else if (command=='d')
+    queue.dequeue();
+}
+  inf.close();
 }
 
 void RunSkipList(string filename)
 {
+  SkipList <int> list(0, 250001);
+  ifstream inf;
+  int num;
+  char command, line[512];
 
+  inf.open(filename.c_str());
+  inf.getline(line,512);
+
+  while(inf >> command>> num)
+  {
+    if (command == 'i')
+        stack.push(num);
+    else if (command=='d')
+    stack.pop();
 }
+  inf.close();
+}
+
