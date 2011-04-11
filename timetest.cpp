@@ -17,7 +17,7 @@ vector<CursorNode <int> > cursorSpace;
 
 using namespace std;
 
-void disp_menu();
+int disp_menu();
 void menu(string filename);
 void RunList(string filename);
 void RunCursorList(string filename);
@@ -26,170 +26,170 @@ void RunStackLi(string filename);
 void RunQueueAr(string filename);
 void RunSkipList(string filename);
 
-int main()
-{
+int main() {
 
-  string filename = "";
+    string filename = "";
 
-  cout << "Filename >> ";
-  getline(cin, filename);
+    cout << "Filename >> ";
+    getline(cin, filename);
 
-}
-
-void disp_menu()
-{
-  cout << "\n      ADT Menu\n"
-  << "0. Quit\n"
-  << "1. LinkedList\n"
-  << "2. CursorList\n"
-  << "3. StackAr\n"
-  << "4. StackLi\n"
-  << "5. QueueAr\n"
-  << "6. SkipList\n";
-}
-
-void menu(string filename)
-{
-  int choice;
-  do
-  {
-    disp_menu();
-    cout << "Your choice >> ";
-    cin >> choice;
-    //clock reset
-    switch(choice)
-    {
-      case 1: RunList(filename); break;
-      case 2: RunCursorList(filename); break;
-      case 3: RunStackAr(filename); break;
-      case 4: RunStackLi(filename); break;
-      case 5: RunQueueAr(filename); break;
-      case 6: RunSkipList(filename); break;
-    }//switch statement
-    cout << "CPU time: " << endl; 
-  } while (choice > 0);
-}
-
-void RunList(string filename)
-{
-  CursorList <int> list(cursorSpace);
-  CursorListItr <int> listItr = list.zeroth();
-  ifstream inf;
-  char command, line[512];
-  int num;
-
-  inf.open(filename.c_str());
-  inf.getline(line,512);
-
-  while(inf >> command>> num)
-  {
-    if (command == 'i')
-      list.insert(num,listItr);
-    else if (command == 'd')
-      list.remove(num);
-  } //while
-  inf.close();
+    menu(filename);
 
 }
 
-void RunCursorList(string filename)
-{
-  CursorList <int> list(cursorSpace);
-  CursorListItr <int> listItr = list.zeroth();
-  ifstream inf;
-  char command, line[512];
-  int num;
+int disp_menu() {
+    int choice;
+    while (1) {
+        cout << "\n      ADT Menu\n"
+                << "0. Quit\n"
+                << "1. LinkedList\n"
+                << "2. CursorList\n"
+                << "3. StackAr\n"
+                << "4. StackLi\n"
+                << "5. QueueAr\n"
+                << "6. SkipList\n";
 
-  inf.open(filename.c_str());
-  inf.getline(line,512);
-
-  while(inf >> command>>num)
-  {
-    if (command == 'i')
-        list.insert(num,listItr);
-    else if (command=='d')
-    list.remove(num);
-  } //while
-  inf.close();
+        cout << "Your choice >> ";
+        cin >> choice;
+        if (choice > -1 && choice < 7)
+            return choice;
+        else
+            cout << "Your choice is not between 1 and 6.\nPlease try again.\n";
+    }
 }
 
-void RunStackAr(string filename)
-{
- StackAr <int> stack(1000000);
-  ifstream inf;
-  char command, line[512];
-  int num;
+void menu(string filename) {
+    CPUTimer ct;
+    int choice;
+    do {
+        choice = disp_menu();
+        ct.reset();
 
-  inf.open(filename.c_str());
-  inf.getline(line,512);
+        switch (choice) {
+            case 1: RunList(filename);
+                break;
+            case 2: RunCursorList(filename);
+                break;
+            case 3: RunStackAr(filename);
+                break;
+            case 4: RunStackLi(filename);
+                break;
+            case 5: RunQueueAr(filename);
+                break;
+            case 6: RunSkipList(filename);
+                break;
+        }//switch statement
+        cout << "CPU time: " << ct.cur_CPUTime() << endl;
+    } while (choice > 0);
+}
 
-  while(inf >> command>> num)
-  {
-    if (command == 'i')
-        stack.push(num);
-    else if (command=='d')
-    stack.pop();
-  } //while
-  inf.close();
+void RunList(string filename) {
+    CursorList <int> list(cursorSpace);
+    CursorListItr <int> listItr = list.zeroth();
+    ifstream inf;
+    char command, line[512];
+    int num;
+
+    inf.open(filename.c_str());
+    inf.getline(line, 512);
+
+    while (inf >> command >> num) {
+        if (command == 'i')
+            list.insert(num, listItr);
+        else if (command == 'd')
+            list.remove(num);
+    } //while
+    inf.close();
+
+}
+
+void RunCursorList(string filename) {
+    CursorList <int> list(cursorSpace);
+    CursorListItr <int> listItr = list.zeroth();
+    ifstream inf;
+    char command, line[512];
+    int num;
+
+    inf.open(filename.c_str());
+    inf.getline(line, 512);
+
+    while (inf >> command >> num) {
+        if (command == 'i')
+            list.insert(num, listItr);
+        else if (command == 'd')
+            list.remove(num);
+    } //while
+    inf.close();
+}
+
+void RunStackAr(string filename) {
+    StackAr <int> stack(1000000);
+    ifstream inf;
+    char command, line[512];
+    int num;
+
+    inf.open(filename.c_str());
+    inf.getline(line, 512);
+
+    while (inf >> command >> num) {
+        if (command == 'i')
+            stack.push(num);
+        else if (command == 'd')
+            stack.pop();
+    } //while
+    inf.close();
 } // RunStackAr()
 
-void RunStackLi(string filename)
-{
- StackLi <int> stack(1000000);
-  ifstream inf;
-  int num;
-  char command, line[512];
- 
-  inf.open(filename.c_str());
-  inf.getline(line,512);
+void RunStackLi(string filename) {
+    StackLi<int> stack;
+    ifstream inf;
+    int num;
+    char command, line[512];
 
-  while(inf >> command>> num)
-  {
-    if (command == 'i')
-        stack.push(num);
-    else if (command=='d')
-    stack.pop();
-  } //while
-  inf.close();
+    inf.open(filename.c_str());
+    inf.getline(line, 512);
+
+    while (inf >> command >> num) {
+        if (command == 'i')
+            stack.push(num);
+        else if (command == 'd')
+            stack.pop();
+    } //while
+    inf.close();
 } // RunStackLi()
 
-void RunQueueAr(string filename)
-{
-  QueueAr <int> queue(1000000);
-  ifstream inf;
-  int num;
-  char command, line[512];
+void RunQueueAr(string filename) {
+    Queue<int> queue(1000000);
+    ifstream inf;
+    int num;
+    char command, line[512];
 
-  inf.open(filename.c_str());
-  inf.getline(line,512);
+    inf.open(filename.c_str());
+    inf.getline(line, 512);
 
-  while(inf >> command>> num)
-  {
-    if (command == 'i')
-        queue.enqueue(num);
-    else if (command=='d')
-    queue.dequeue();
-}
-  inf.close();
+    while (inf >> command >> num) {
+        if (command == 'i')
+            queue.enqueue(num);
+        else if (command == 'd')
+            queue.dequeue();
+    }
+    inf.close();
 }
 
-void RunSkipList(string filename)
-{
-  SkipList <int> list(0, 250001);
-  ifstream inf;
-  int num;
-  char command, line[512];
+void RunSkipList(string filename) {
+    SkipList <int> list(0, 250001);
+    ifstream inf;
+    int num;
+    char command, line[512];
 
-  inf.open(filename.c_str());
-  inf.getline(line,512);
+    inf.open(filename.c_str());
+    inf.getline(line, 512);
 
-  while(inf >> command>> num)
-  {
-    if (command == 'i')
-        stack.push(num);
-    else if (command=='d')
-    stack.pop();
+    while (inf >> command >> num) {
+        if (command == 'i')
+            list.insert(num);
+        else if (command == 'd')
+            list.deleteNode(num);
+    }
+    inf.close();
 }
-  inf.close();
-}
-
