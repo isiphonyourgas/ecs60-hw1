@@ -71,13 +71,15 @@ istream &operator >> (istream &input, LongInt &longint)
   //Recieves from the stream and converts into integer format
   c = input.get();
   s = int(c) - 48;
-
+  
+cout << c << endl;
   //Filters out unwanted chars
   if ((s > -1) && (s < 10))//integer check
     longint.insertBack(s);
-}
+} 
+  input.clear();
 //Return Statement
-  return input;
+ return input;
 }//Overloaded >> Insertion Operator
 
 
